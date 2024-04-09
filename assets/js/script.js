@@ -9,7 +9,7 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-
+  
 }
 
 // Todo: create a function to render the task list and make cards draggable
@@ -34,11 +34,18 @@ function handleDrop(event, ui) {
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
 $(document).ready(function () {
+  //Render task list when the page loads
+  renderTaskList();
 
+  // Presents a caledar to pick the date
+  $('#TaskDueDate').datepicker({
+      changeMonth: true,
+      changeYear: true,
+    });
+
+  // Makes lanes droppable
+  $('.lane').droppable({
+    accept: '.draggable',
+    drop: handleDrop,
+  })
 });
-
-// Presents a caledanr to pick the date
-$('#TaskDueDate').datepicker({
-    changeMonth: true,
-    changeYear: true,
-  });
