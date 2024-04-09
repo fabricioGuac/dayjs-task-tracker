@@ -4,7 +4,7 @@ let nextId = JSON.parse(localStorage.getItem("nextId"));
 
 // Todo: create a function to generate a unique task id
 function generateTaskId() {
-
+  
 }
 
 // Todo: create a function to create a task card
@@ -36,3 +36,9 @@ function handleDrop(event, ui) {
 $(document).ready(function () {
 
 });
+
+// Presents a caledanr to pick the date
+$('#TaskDueDate').datepicker({
+    changeMonth: true,
+    changeYear: true,
+  });
