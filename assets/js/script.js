@@ -3,7 +3,7 @@ let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId")) || 1;
 
 
-// Todo: create a function to generate a unique task id
+
 function generateTaskId() {
   // Increases the value of nextId by one
   nextId++
@@ -13,7 +13,7 @@ function generateTaskId() {
   return nextId.toString()
 }
 
-// Todo: create a function to create a task card
+
 function createTaskCard(task) {
 // Creates a div using jquery
   const taskCard = $('<div>')
@@ -61,7 +61,7 @@ taskCard.append(cardHeader, cardBody);
 return taskCard;
 }
 
-// Todo: create a function to render the task list and make cards draggable
+
 function renderTaskList() {
   // Sets the divs where ther task-cards well be appended into  jquery elements and empties them to avoid repetition
   const todo = $('#todo-cards');
@@ -91,12 +91,42 @@ function renderTaskList() {
 
 // Todo: create a function to handle adding a new task
 function handleAddTask(event){
-
+  // Prevents the page from reloading after the form is submited 
+  event.preventDefault();
+// Gets the values from the form and uses the trim method to eliminate the spaces before and after the content
+  const taskTitle = $('#TaskTitle').val().trim();
+  const DueDate = $('#TaskDueDate').val();
+  const TaskDescription = $('#Description').val().trim();
+// Creates an object in the var newTask using the values from the form, an id using the generateTaskId function and sets the status to a default to-do 
+  const newTask = {
+    id:generateTaskId(),
+    title: taskTitle,
+    dueDate: DueDate,
+    Description: TaskDescription,
+    statusbar: 'to-do'
+  }
+  // Pushes the newTask object to the taskList
+  taskList.push(newTask)
+// Clears the form
+  $('#TaskTitle').val('');
+  $('#TaskDueDate').val('');
+  $('#Description').val('')
+  // Hides the modal
+  $('#formModal').modal('hide');
+  // Updates the displayed task-cards 
+  renderTaskList()
 }
 
 // Todo: create a function to handle deleting a task
 function handleDeleteTask(event){
-
+  // Retrieves the id of the event target
+  const deltarget = ($(event.target).attr('data-task-id'));
+  // Uses the filter method to create a new array excluding the object that matches the id 
+  const newTaskList = taskList.filter(task => task.id !==deltarget)
+  // Sets the value of the taskList to the contents of the array exluding the element to delete
+  taskList = newTaskList
+  // Updates the displayed task-cards
+  renderTaskList()
 }
 
 // Todo: create a function to handle dropping a task into a new status lane
