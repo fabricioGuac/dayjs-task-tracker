@@ -131,7 +131,18 @@ function handleDeleteTask(event){
 
 // Todo: create a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
-
+  // Gets the id of the dragged item
+  const cardstatus = $(ui.draggable[0]).attr('data-task-id');
+  // Gets the ide of the target status line 
+  const lineStatus =event.target.id;
+  // Loops through the taskList to find a task with a matching id and update it's status
+  taskList.forEach(task => {
+    if(task.id === cardstatus){
+      task.statusbar = lineStatus
+    }
+    // Updates the displayed task-cards after each status update
+    renderTaskList()
+  });
 }
 
 // Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
