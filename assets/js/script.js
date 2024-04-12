@@ -63,7 +63,30 @@ return taskCard;
 
 // Todo: create a function to render the task list and make cards draggable
 function renderTaskList() {
-
+  // Sets the divs where ther task-cards well be appended into  jquery elements and empties them to avoid repetition
+  const todo = $('#todo-cards');
+  todo.empty()
+  const progress = $('#in-progress-cards');
+  progress.empty();
+  const done = $('#done-cards');
+  done.empty();
+// Uses a  forof loop to iterate over the taskList and appends the elements to the divs that matches the statusbar
+  for (let task of taskList) {
+    if (task.statusbar === 'to-do') {
+      todo.append(createTaskCard(task));
+    } else if (task.statusbar === 'in-progress') {
+   progress.append(createTaskCard(task));
+    } else if (task.statusbar === 'done') {
+      done.append(createTaskCard(task));
+    }
+  } 
+  // Saves the changes in taskList to the localstorage
+    localStorage.setItem('tasks', JSON.stringify(taskList))
+  // Uses the method .draggable to make cards draggable and uses aditional options to reduce opacity while dragging and to keep it on top of other elements 
+  $('.draggable').draggable({
+    opacity: 0.7,
+    zIndex:100,
+  })
 }
 
 // Todo: create a function to handle adding a new task
