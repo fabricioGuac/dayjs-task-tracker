@@ -15,7 +15,50 @@ function generateTaskId() {
 
 // Todo: create a function to create a task card
 function createTaskCard(task) {
-  
+// Creates a div using jquery
+  const taskCard = $('<div>')
+  // Adds the Bootstrap card class to make it a flexible container, the task-class for css, the draggable class for the draggable method and Bootstrap margin in the y axis 
+  .addClass('card task-card draggable my-3')
+  // Sets the card id
+  .attr('data-task-id', task.id);
+  // Creates a div with the Bootstrap classes card-header and h4 to be applied to the text that would be the current task title
+const cardHeader = $('<div>').addClass('card-header h4').text(task.title);
+// Creates a div with the class card-body that is the common bootstrap class to contain the primary contents of a card
+const cardBody = $('<div>').addClass('card-body');
+//  Creates a p element containing the value of the current task description
+const cardDescription = $('<p>').addClass('card-text').text(task.Description);
+// Creates another p element with the value of the current dueDate
+const cardDueDate = $('<p>').addClass('card-text').text(task.dueDate);
+// Creates a button with Bootstrap btn class and btn-danger makes it red, text saying delete and assigns it the id of the current task
+const cardDeleteBtn = $('<button>')
+  .addClass('btn btn-danger')
+  .text('Delete')
+  .attr('data-task-id', task.id);
+cardDeleteBtn.on('click', handleDeleteTask);
+
+// If the done status is not done applies the following logic
+if (task.statusbar !== 'done') {
+  // Sets the curent date in now using dayjs 
+  const now = dayjs();
+  // Sets the due date as days and month in two digits and year in four
+  const taskDueDate = dayjs(task.dueDate, 'DD/MM/YYYY');
+
+// If now is the same date as the due date adds the classes bg-warning and text-white for a yellow background and withe text
+  if (now.isSame(taskDueDate, 'day')) {
+    taskCard.addClass('bg-warning text-white');
+    // If now is after the due date it add the classes bg-danger and text-white for a red background, withe text and changes the border of the delete btn to a light gray color
+  } else if (now.isAfter(taskDueDate)) {
+    taskCard.addClass('bg-danger text-white');
+    cardDeleteBtn.addClass('border-light');
+  }
+}
+
+// Appends the contents to the body
+cardBody.append(cardDescription, cardDueDate, cardDeleteBtn);
+// Appends the header and body to the main card div
+taskCard.append(cardHeader, cardBody);
+// Returns the complete task card
+return taskCard;
 }
 
 // Todo: create a function to render the task list and make cards draggable
