@@ -3,7 +3,7 @@ let taskList = JSON.parse(localStorage.getItem("tasks")) || [];
 let nextId = JSON.parse(localStorage.getItem("nextId")) || 1;
 
 
-
+// Creates a function to generate a unique task id
 function generateTaskId() {
   // Increases the value of nextId by one
   nextId++
@@ -13,7 +13,7 @@ function generateTaskId() {
   return nextId.toString()
 }
 
-
+// Sets a function to create a task card
 function createTaskCard(task) {
 // Creates a div using jquery
   const taskCard = $('<div>')
@@ -61,7 +61,7 @@ taskCard.append(cardHeader, cardBody);
 return taskCard;
 }
 
-
+// Creates a function to render the task list and make cards draggable
 function renderTaskList() {
   // Sets the divs where ther task-cards well be appended into  jquery elements and empties them to avoid repetition
   const todo = $('#todo-cards');
@@ -89,7 +89,7 @@ function renderTaskList() {
   })
 }
 
-// Todo: create a function to handle adding a new task
+// Creates a function to handle adding a new task
 function handleAddTask(event){
   // Prevents the page from reloading after the form is submited 
   event.preventDefault();
@@ -117,7 +117,7 @@ function handleAddTask(event){
   renderTaskList()
 }
 
-// Todo: create a function to handle deleting a task
+// Creates a function to handle deleting a task
 function handleDeleteTask(event){
   // Retrieves the id of the event target
   const deltarget = ($(event.target).attr('data-task-id'));
@@ -129,7 +129,7 @@ function handleDeleteTask(event){
   renderTaskList()
 }
 
-// Todo: create a function to handle dropping a task into a new status lane
+// Creates a function to handle dropping a task into a new status lane
 function handleDrop(event, ui) {
   // Gets the id of the dragged item
   const cardstatus = $(ui.draggable[0]).attr('data-task-id');
@@ -145,10 +145,13 @@ function handleDrop(event, ui) {
   });
 }
 
-// Todo: when the page loads, render the task list, add event listeners, make lanes droppable, and make the due date field a date picker
+// Makes it so when the page loads, render the task list, add event listeners, make lanes droppable, and makes the due date field a date picker
 $(document).ready(function () {
   //Render task list when the page loads
   renderTaskList();
+
+// Adds an event listener to the form
+  $('#formsubmit').on('click', handleAddTask)
 
   // Presents a caledar to pick the date
   $('#TaskDueDate').datepicker({
