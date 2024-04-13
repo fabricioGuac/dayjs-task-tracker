@@ -6,11 +6,11 @@ let nextId = JSON.parse(localStorage.getItem("nextId")) || 1;
 // Creates a function to generate a unique task id
 function generateTaskId() {
   // Increases the value of nextId by one
-  nextId++
+  nextId++;
   // Uptdates the local storage to the new value
   localStorage.setItem('nextId',nextId);
   // Returns the value of nextId in a string form to ensure consistency in data type when dealing with localStorage
-  return nextId.toString()
+  return nextId.toString();
 }
 
 // Sets a function to create a task card
@@ -65,7 +65,7 @@ return taskCard;
 function renderTaskList() {
   // Sets the divs where ther task-cards well be appended into  jquery elements and empties them to avoid repetition
   const todo = $('#todo-cards');
-  todo.empty()
+  todo.empty();
   const progress = $('#in-progress-cards');
   progress.empty();
   const done = $('#done-cards');
@@ -81,12 +81,12 @@ function renderTaskList() {
     }
   } 
   // Saves the changes in taskList to the localstorage
-    localStorage.setItem('tasks', JSON.stringify(taskList))
+    localStorage.setItem('tasks', JSON.stringify(taskList));
   // Uses the method .draggable to make cards draggable and uses aditional options to reduce opacity while dragging and to keep it on top of other elements 
   $('.draggable').draggable({
     opacity: 0.7,
     zIndex:100,
-  })
+  });
 }
 
 // Creates a function to handle adding a new task
@@ -97,6 +97,17 @@ function handleAddTask(event){
   const taskTitle = $('#TaskTitle').val().trim();
   const DueDate = $('#TaskDueDate').val();
   const TaskDescription = $('#Description').val().trim();
+// Gets the modal footer
+  const footer = $('.modal-footer');
+  // creates an h4 element with the error message
+  const warning = $('<h4>').addClass('alert alert-danger').text('Make sure to fill the form');
+// If any of the inputs if empty checks if there are no children with the warning class if there are none prepends the warning to the footer
+  if(taskTitle === ''||DueDate===''||TaskDescription===''){
+    if(footer.children('.alert-danger').length === 0){
+    footer.prepend(warning);}
+  }else{ 
+    // Removes the warning once a full form is submited 
+    footer.children('.alert-danger').remove();
 // Creates an object in the var newTask using the values from the form, an id using the generateTaskId function and sets the status to a default to-do 
   const newTask = {
     id:generateTaskId(),
@@ -104,17 +115,17 @@ function handleAddTask(event){
     dueDate: DueDate,
     Description: TaskDescription,
     statusbar: 'to-do'
-  }
+  };
   // Pushes the newTask object to the taskList
-  taskList.push(newTask)
+  taskList.push(newTask);
 // Clears the form
   $('#TaskTitle').val('');
   $('#TaskDueDate').val('');
-  $('#Description').val('')
+  $('#Description').val('');
   // Hides the modal
   $('#formModal').modal('hide');
   // Updates the displayed task-cards 
-  renderTaskList()
+  renderTaskList();}
 }
 
 // Creates a function to handle deleting a task
@@ -122,11 +133,11 @@ function handleDeleteTask(event){
   // Retrieves the id of the event target
   const deltarget = ($(event.target).attr('data-task-id'));
   // Uses the filter method to create a new array excluding the object that matches the id 
-  const newTaskList = taskList.filter(task => task.id !==deltarget)
+  const newTaskList = taskList.filter(task => task.id !==deltarget);
   // Sets the value of the taskList to the contents of the array exluding the element to delete
-  taskList = newTaskList
+  taskList = newTaskList;
   // Updates the displayed task-cards
-  renderTaskList()
+  renderTaskList();
 }
 
 // Creates a function to handle dropping a task into a new status lane
@@ -139,9 +150,9 @@ function handleDrop(event, ui) {
   taskList.forEach(task => {
     if(task.id === cardstatus){
       task.statusbar = lineStatus
-    }
+    };
     // Updates the displayed task-cards after each status update
-    renderTaskList()
+    renderTaskList();
   });
 }
 
@@ -151,7 +162,7 @@ $(document).ready(function () {
   renderTaskList();
 
 // Adds an event listener to the form
-  $('#formsubmit').on('click', handleAddTask)
+  $('#formsubmit').on('click', handleAddTask);
 
   // Presents a caledar to pick the date
   $('#TaskDueDate').datepicker({
@@ -163,5 +174,5 @@ $(document).ready(function () {
   $('.lane').droppable({
     accept: '.draggable',
     drop: handleDrop,
-  })
+  });
 });
